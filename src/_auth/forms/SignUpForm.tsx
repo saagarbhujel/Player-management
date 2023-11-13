@@ -79,6 +79,8 @@ const SignUpForm = () => {
     }
   };
 
+  document.title= "PlayerManagement-SignUp"
+
   return (
     <section
       className={"flex flex-col justify-center items-center h-screen w-screen"}
