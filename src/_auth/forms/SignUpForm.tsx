@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "../../api/axios";
-
+import { useToast } from "../../hooks/useToast";
 
 const SignUpForm = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/sign-in";
+
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassowrd] = useState("");
@@ -15,73 +19,65 @@ const SignUpForm = () => {
   const [passwordError, setPasswordError] = useState("");
   const [userNameError, setUserNameError] = useState("");
 
-  
+  const { setToast } = useToast();
 
-  const reserError =()=>{
+  const reserError = () => {
     setErrorMsg("");
     setEmailError("");
     setPasswordError("");
     setUserNameError("");
-  }
+  };
 
   const handleSiginUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     reserError();
 
-
     try {
-      const response = await axios.post('/player', ({
+      const response = await axios.post("/player", {
         name: userName,
         email,
         password,
-        country
-       }))
-
+        country,
+      });
+      console.log(response.status);
+      if (response.status === 201) {
+        setToast("Account created successfully", "success");
+        navigate(from, { replace: true });
+      } else {
+        setToast("Something went wrong", "error");
+      }
     } catch (error: any) {
-      if( error.response.data.status !== 201 ){
-        let errMsg:string | string[] = error.response.data.message;
-        console.log(errMsg);
+      if (error.response.data.status !== 201) {
+        let errMsg: string | string[] = error.response.data.message;
+        // console.log(errMsg);
 
         if (!Array.isArray(errMsg)) {
           errMsg = [errMsg];
         }
-         errMsg.forEach((err: string) => {
-          if(err.startsWith('email')){
+        errMsg.forEach((err: string) => {
+          if (err.startsWith("email")) {
             setEmailError(err);
-            console.log(emailError);
-          }
-          else if(err.startsWith('password')){
+            // console.log(emailError);
+          } else if (err.startsWith("password")) {
             setPasswordError(err);
-            console.log(passwordError, "password error");  
-          }
-          else if(err.startsWith('name')){
+            // console.log(passwordError, "password error");
+          } else if (err.startsWith("name")) {
             setUserNameError(err);
-            console.log(userNameError);
-            
-          } else{
-            setErrorMsg('Invalid credentials.')
-            console.log('Invalid credentials.');
-            
+            // console.log(userNameError);
+          } else {
+            setErrorMsg("Invalid credentials.");
+            console.log("Invalid credentials.");
           }
         });
-        
+
         return;
       } else if (error.response.data.status === 404) {
-        setErrorMsg('Invalid credentials.')
+        setErrorMsg("Invalid credentials.");
       } else {
-        setErrorMsg('Server error.')
+        setErrorMsg("Server error.");
       }
-  }
-   }
-  
-     
-     
-     
-   
- 
-      
-      
-    
+    }
+  };
 
   return (
     <section
@@ -93,9 +89,9 @@ const SignUpForm = () => {
       <p className="text-light-3 small-medium md:base-regular">
         Welcome ! Please Signup to use Player Management.
       </p>
-      {
-        errorMsg && <p className="text-red first-letter:capitalize">{errorMsg}</p>
-      }
+      {errorMsg && (
+        <p className="text-red first-letter:capitalize">{errorMsg}</p>
+      )}
       <form onSubmit={handleSiginUp} className="  md:w-1/6 ">
         {/* Username */}
         <div className="flex flex-col mt-4">
@@ -105,7 +101,7 @@ const SignUpForm = () => {
 
           <input
             type="text"
-            onChange={(e)=>setUserName(e.target.value)}
+            onChange={(e) => setUserName(e.target.value)}
             name="username"
             value={userName}
             required
@@ -114,7 +110,9 @@ const SignUpForm = () => {
             id={"username"}
             className={`border border-gray-300  h-9 pl-2 rounded-md font-light text-sm  outline-none focus:border-blue-300 focus:ring-4 ring-blue-500/20  transition-all ease-in-out`}
           />
-          {userNameError ? <p className="text-red first-letter:capitalize">{userNameError}</p> : null}
+          {userNameError ? (
+            <p className="text-red first-letter:capitalize">{userNameError}</p>
+          ) : null}
         </div>
 
         {/* Email */}
@@ -127,11 +125,13 @@ const SignUpForm = () => {
             name="email"
             required
             value={email}
-            onChange={(e)=>setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             id={"email"}
             className="border border-gray-300  h-9 pl-2 rounded-md font-light text-sm  outline-none focus:border-blue-300 focus:ring-4 ring-blue-500/20  transition-all ease-in-out"
           />
-          {emailError && <p className="text-red first-letter:capitalize">{emailError}</p>}
+          {emailError && (
+            <p className="text-red first-letter:capitalize">{emailError}</p>
+          )}
         </div>
 
         {/* Country */}
@@ -155,7 +155,6 @@ const SignUpForm = () => {
             <option value="in">India</option>
             <option value="af">Afganistan</option>
           </select>
-          
         </div>
 
         {/* Password */}
@@ -172,10 +171,12 @@ const SignUpForm = () => {
             max={24}
             value={password}
             id={"password"}
-            onChange={(e)=>setPassowrd(e.target.value)}
+            onChange={(e) => setPassowrd(e.target.value)}
             className="border border-gray-300  h-9 pl-2 rounded-md font-light text-sm  outline-none focus:border-blue-300 focus:ring-4 ring-blue-500/20  transition-all ease-in-out"
           />
-          {passwordError ? <p className="text-red first-letter:capitalize">{passwordError}</p> : null}
+          {passwordError ? (
+            <p className="text-red first-letter:capitalize">{passwordError}</p>
+          ) : null}
         </div>
 
         {/* Button */}
