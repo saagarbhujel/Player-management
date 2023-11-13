@@ -1,16 +1,19 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './globals.css'
-import {BrowserRouter} from "react-router-dom";
-import { ToastContest } from './context/ToastContest.tsx';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.tsx";
+import "./globals.css";
+import { BrowserRouter } from "react-router-dom";
+import { ToastContest } from "./context/ToastContest.tsx";
+import { AuthProvider } from "./context/AuthContext.tsx";
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-      <BrowserRouter>
+    <BrowserRouter>
       <ToastContest>
-    <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </ToastContest>
-      </BrowserRouter>
-  </React.StrictMode>,
-)
+    </BrowserRouter>
+  </React.StrictMode>
+);
