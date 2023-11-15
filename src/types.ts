@@ -21,3 +21,9 @@ export type LoginResponse = {
     name: string;
     id: string;
 }
+
+export type INavLink ={
+    // imageUrl: string;
+    route: string;
+    label: string;
+}
