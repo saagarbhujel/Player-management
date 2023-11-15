@@ -2,9 +2,11 @@ import {Route, Routes} from "react-router-dom";
 import AuthLayout from "./_auth/AuthLayout.tsx";
 import SignInForm from "./_auth/forms/SignInForm.tsx";
 import SignUpForm from "./_auth/forms/SignUpForm.tsx";
-import Home from "./pages/Home.tsx";
+
 import RequireAuth from "./components/RequireAuth.tsx";
 import PersistLogin from "./components/PersistLogin.tsx";
+import{ Home} from "./_root/pages";
+import RootLayout from "./_root/RootLayout.tsx";
 
 
 function App() {
@@ -23,8 +25,13 @@ function App() {
            </Route>
 
               {/*Private Routes*/}
+              <Route element={<RootLayout/>}>
+
+              
               <Route element={<RequireAuth roles={['admin', 'staff', 'player']} />} >
-                <Route path="/" element={<Home/>} />
+                <Route index element={<Home/>} />
+              </Route>
+
               </Route>
 
               </Route>
