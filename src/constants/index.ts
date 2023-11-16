@@ -6,24 +6,15 @@ export const sidebarLinks = [
     },
     {
     //   imageUrl: '/assets/icons/wallpaper.svg',
-      route: '/explore',
-      label: 'Explore',
+      route: '/chats',
+      label: 'Chats',
     },
     {
     //   imageUrl: '/assets/icons/people.svg',
-      route: '/all-user',
-      label: 'People',
+      route: '/games',
+      label: 'Games',
     },
-    {
-    //   imageUrl: '/assets/icons/bookmark.svg',
-      route: '/saved',
-      label: 'Saved',
-    },
-    {
-    //   imageUrl: '/assets/icons/gallery-add.svg',
-      route: '/create-post',
-      label: 'Create Post',
-    }
+   
   ];
   
   
