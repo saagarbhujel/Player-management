@@ -1,10 +1,11 @@
+import LeaderBoard from "../../components/LeaderBoard"
 
 
 const Home = () => {
    
   return (
-    <div>
-      homr
+    <div >
+     <LeaderBoard/>
         
     </div>
   )
