@@ -27,3 +27,34 @@ export type INavLink ={
     route: string;
     label: string;
 }
+
+export type Player = {
+    id: string;
+    name: string;
+    rank: string;
+    active: boolean;
+    country: Country;
+    statistics: Statistics;
+}
+
+export type Statistics = {
+    experience_point: number;
+    coins: number;
+    games_won: number;
+    games_played: number;
+}
+
+export enum Country {
+    Nepal = 'np',
+    India = 'in',
+    "United States" = 'us',
+    Australia = 'au',
+    Afghanistan = 'af',
+}
+
+export const CountryMap = new Map()
+.set(Country.Nepal, 'Nepal')
+.set(Country.India, 'India')
+.set(Country['United States'], 'United States')
+.set(Country.Australia, 'Australia')
+.set(Country.Afghanistan, 'Afghanistan');
