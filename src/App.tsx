@@ -5,7 +5,7 @@ import SignUpForm from "./_auth/forms/SignUpForm.tsx";
 
 import RequireAuth from "./components/RequireAuth.tsx";
 import PersistLogin from "./components/PersistLogin.tsx";
-import{ Chats, Games, Home} from "./_root/pages";
+import{ Chats, Games, Home, Profile} from "./_root/pages";
 import RootLayout from "./_root/RootLayout.tsx";
 
 
@@ -30,6 +30,7 @@ function App() {
               
               <Route element={<RequireAuth roles={['admin', 'staff', 'player']} />} >
                 <Route index element={<Home/>} />
+                <Route path="/profile/:userId/*" element={<Profile/>} />
               </Route>
 
                <Route element={<RequireAuth roles={['player']} />} >
