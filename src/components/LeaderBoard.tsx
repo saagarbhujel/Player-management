@@ -21,7 +21,7 @@ const LeaderBoard =  () => {
             const res =await axiosPrivate.get("/player/leaderboard")
             // console.log(res.data);
             const data: Player[] = res.data
-            console.log(data);
+            // console.log(data);
             setLeaderBoardData(data)
             
         } catch (error) {
