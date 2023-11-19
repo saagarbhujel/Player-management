@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { CountryMap, Player } from "../../types";
@@ -69,12 +69,26 @@ const Profile = () => {
               </p>
             </div>
 
+            <div className="flex justify-center gap-4">
+              <div className={`${user.id !== userId && "hidden"}`}>
+                <Link to={`/update-profile/${userId}`} 
+                className={`h-12 bg-gray-700/20 mt-2 px-5 flex-center gap-2 rounded-lg ${user.id !== userId && "hidden"}`}
+                >
+                <img src="/assets/icons/edit.svg" alt="Edit" />
+                <p>Edit Profile</p>
+                </Link>
+              </div>
+            </div>
+
             <div className="flex flex-col mt-6 items-center justify-center w-full xl:justify-start flex-wrap z-20 bg-blue-500/20 p-5 rounded-md">
               <p className="w-full"><span>Experience Points: </span>{playerData?.statistics.experience_point}</p>
               <p className="w-full"><span>Game Played: </span>{playerData?.statistics.games_played}</p>
               <p className="w-full"><span>Games Won: </span>{playerData?.statistics.games_won}</p>
               <p className=" w-full"><span>Coins Earned: </span>${playerData?.statistics.coins}</p>
             </div>
+
+           
+
           </div>
         </div>
       </div>
