@@ -69,10 +69,10 @@ const Profile = () => {
               </p>
             </div>
 
-            <div className="flex justify-center gap-4">
+            <div className="flex justify-center md:justify-start gap-4 ">
               <div className={`${user.id !== userId && "hidden"}`}>
                 <Link to={`/update-profile/${userId}`} 
-                className={`h-12 bg-gray-700/20 mt-2 px-5 flex-center gap-2 rounded-lg ${user.id !== userId && "hidden"}`}
+                className={`h-12 bg-gray-700/30 hover:bg-gray-700/20 mt-2 px-5 flex-center gap-2 rounded-lg ${user.id !== userId && "hidden"}`}
                 >
                 <img src="/assets/icons/edit.svg" alt="Edit" />
                 <p>Edit Profile</p>
