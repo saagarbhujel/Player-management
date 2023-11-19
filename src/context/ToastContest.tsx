@@ -50,7 +50,7 @@ export const ToastContest = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timer = setInterval(() => {
       if (toasts.length > 0) {
         const oldestToast = toasts[0];
 
