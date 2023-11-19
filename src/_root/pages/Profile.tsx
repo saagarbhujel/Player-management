@@ -69,7 +69,7 @@ const Profile = () => {
               </p>
             </div>
 
-            <div className="flex flex-col mt-6 items-center justify-center w-full xl:justify-start flex-wrap z-20">
+            <div className="flex flex-col mt-6 items-center justify-center w-full xl:justify-start flex-wrap z-20 bg-blue-500/20 p-5 rounded-md">
               <p className="w-full"><span>Experience Points: </span>{playerData?.statistics.experience_point}</p>
               <p className="w-full"><span>Game Played: </span>{playerData?.statistics.games_played}</p>
               <p className="w-full"><span>Games Won: </span>{playerData?.statistics.games_won}</p>
