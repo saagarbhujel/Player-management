@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 const Missing = () => {
+    document.title = "404 | Page Not Found";
   return (
     <article className="flex flex-col justify-center items-center h-screen bg-gradient-to-br from-gray-100 to-gray-300">
       <h1 className=" uppercase text-2xl font-bold">Opps! </h1>
