@@ -26,6 +26,8 @@ const Games = () => {
       setIsLoading(false);
     }
   };
+
+  document.title = "Player Management-Games";
   return (
     <div >
       <div className="ml-10">
