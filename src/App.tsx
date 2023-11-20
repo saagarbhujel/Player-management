@@ -7,6 +7,7 @@ import RequireAuth from "./components/RequireAuth.tsx";
 import PersistLogin from "./components/PersistLogin.tsx";
 import { Chats, Games, Home, Profile, UpdateProfile } from "./_root/pages";
 import RootLayout from "./_root/RootLayout.tsx";
+import Missing from "./components/Missing.tsx";
 
 function App() {
   return (
@@ -36,6 +37,9 @@ function App() {
                 element={<UpdateProfile />}
               />
             </Route>
+
+            {/* Catch for all */}
+            <Route path="*" element={<Missing/>} />
           </Route>
         </Route>
       </Routes>
