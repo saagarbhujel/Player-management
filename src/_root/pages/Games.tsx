@@ -27,7 +27,11 @@ const Games = () => {
     }
   };
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div >
+      <div className="ml-10">
+      <h1 className=" mt-16 text-[28px] font-bold">Play Games</h1>
+      </div>
+    <div className="flex justify-center items-center h-[80vh]">
       <div className={`${user.role !== "player" && "hidden"}`}>
         <button
           onClick={handlePlayGame}
@@ -36,6 +40,8 @@ const Games = () => {
           {isLoading ? <Loader /> : "Play"}
         </button>
       </div>
+    </div>
+      
     </div>
   );
 };
