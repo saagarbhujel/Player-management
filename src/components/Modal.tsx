@@ -31,7 +31,7 @@ const Modal = ({children, isOpened, onCancel, className}: ModalProps) => {
    <dialog
    ref={ref}
    onCancel={onCancel}
-   className={cn('p-4 text-center rounded-lg shadow-lg w-72 bg-green-300/20', 
+   className={cn('p-4 text-center rounded-lg shadow-lg w-72 h-36 bg-gray-300', 
    className)}
    onClick={(e)=> {
     ref.current && !isClickInsideModal(e, ref.current) && onCancel()
