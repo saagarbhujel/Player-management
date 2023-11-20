@@ -1,3 +1,6 @@
+import  {clsx,  type ClassValue} from 'clsx';
+import {twMerge} from 'tailwind-merge';
+
 export const setCookie = (key: string, value: string, expiresAt: number, session= false) =>{
 
     if(!session){
@@ -19,4 +22,8 @@ export const getCookies = (key: string) => {
         }
     }
     return null;
+}
+
+export const cn = ( ...inputs: ClassValue[] ) => {
+    return twMerge(clsx(inputs))
 }
