@@ -1,13 +1,20 @@
 
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { sidebarLinks } from '../constants';
 import { INavLink } from '../types';
+import { useState } from 'react';
+import ConformModal from '../_root/pages/ConformModal';
+import useAuth from '../hooks/useAuth';
 
 const LeftSideBar = () => {
 
     const {pathname} = useLocation();
+    const navigate = useNavigate()
+    const {logout} = useAuth()
+
+    const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
   return (
-    <nav className="leftsidebar">
+    <nav className="leftsidebar max-h-full">
       <div className=" flex flex-col gap-11">
         <Link to="/" className="flex gap-3 items-center">
           <img
@@ -47,13 +54,30 @@ const LeftSideBar = () => {
         </ul>
       </div>
       <button 
-      
       className="shad-button_ghost"
-      
+      onClick={()=> {
+        setIsLogoutModalOpen(true)
+      }}
       >
         <img src="/assets/icons/logout.svg" alt="logout" />
         <p className=" small-medium lg:base-medium">Logout</p>
       </button>
+     
+
+      <ConformModal
+      className='top-[45vh] left-[50rem]'
+      isOpened={isLogoutModalOpen}
+      message='Are you sure you want to logout?'
+      onConfirm={()=> {
+        setIsLogoutModalOpen(false)
+        logout()
+        navigate('/sign-in')
+      }}
+      onReject={()=> {
+        setIsLogoutModalOpen(false)
+      }}
+      />
+   
     </nav>
         
 
