@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import useAxiosPrivate from "../hooks/useAxiosPrivate"
 import { CountryMap, Player } from "../types"
 import { useNavigate } from "react-router-dom"
+import Loader from "./Loader"
 
 
 const LeaderBoard =  () => {
@@ -51,7 +52,7 @@ const LeaderBoard =  () => {
     if(isLoading && !leaderBoardData){
       return(
         <div className="w-full flex flex-col justify-center items-center min-h-[calc(100vh-8rem)]">
-        <h3>Loading...</h3>
+        <Loader/>
       </div>
       )
     }
