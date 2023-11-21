@@ -8,6 +8,7 @@ import PersistLogin from "./components/PersistLogin.tsx";
 import { Chats, Games, Home, Profile, UpdateProfile } from "./_root/pages";
 import RootLayout from "./_root/RootLayout.tsx";
 import Missing from "./components/Missing.tsx";
+import AdminSignInForm from "./_auth/forms/AdminSignInForm.tsx";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route element={<AuthLayout />}>
             <Route path={"sign-in"} element={<SignInForm />} />
             <Route path={"sign-up"} element={<SignUpForm />} />
+            <Route path={'admin'}  element={<AdminSignInForm/>} />
           </Route>
 
           {/*Private Routes*/}
@@ -38,9 +40,9 @@ function App() {
               />
             </Route>
 
+          </Route>
             {/* Catch for all */}
             <Route path="*" element={<Missing/>} />
-          </Route>
         </Route>
       </Routes>
     </main>
