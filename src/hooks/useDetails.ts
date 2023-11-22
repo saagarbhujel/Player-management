@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import useAxiosPrivate from "./useAxiosPrivate";
 import { Player } from "../types";
+import useAuth from "./useAuth";
 
 const useDetails = () => {
   const axiosPrivate = useAxiosPrivate();
+  const {user} = useAuth();
   
 
   const [details, setDetails] = useState<Player | null>(null);
  
 
   useEffect(() => {
+    if(user.role !== 'player') return;
     const fetchDetails = async () => {
       try {
         const response = await axiosPrivate.get("/player");
@@ -27,7 +30,7 @@ const useDetails = () => {
     };
 
     fetchDetails();
-  }, []);
+  }, [user.role]);
   // console.log(details);
 
   return { details };
