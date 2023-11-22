@@ -11,9 +11,13 @@ const LeftSideBar = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { logout } = useAuth();
-  const { user } = useAuth();
+  const { user} = useAuth();
+  const role = user.role;
+  
   const detailsWrapper = useDetails();
   const playerDetails = detailsWrapper.details;
+
+  
 
   // console.log( playerDetails);
 
@@ -25,7 +29,16 @@ const LeftSideBar = () => {
           <div className=" h-14">
             <Loader />
           </div>
-        ) : (
+        ): role === 'admin' ? (
+          <div className="flex gap-3 items-center">
+             <div className="bg-gray-500 w-12 h-12 rounded-full" />
+            <div className="flex flex-col">
+                  <p className="body-bold first-letter:capitalize">
+                Admin
+              </p>
+            </div>
+          </div>
+        ) : role === 'player' ? (
           <Link to={`/profile/${user.id}`} className="flex gap-3 items-center">
               {
                 !playerDetails ? (<Loader/>) : (
@@ -43,6 +56,15 @@ const LeftSideBar = () => {
                 )
               }
           </Link>
+        ) : (
+            <div className="flex gap-3 items-center">
+             <div className="bg-gray-500 w-12 h-12 rounded-full" />
+            <div className="flex flex-col">
+                  <p className="body-bold first-letter:capitalize">
+                Staff
+              </p>
+            </div>
+          </div>
         )}
 
         <ul>
