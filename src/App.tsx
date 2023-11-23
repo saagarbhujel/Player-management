@@ -5,10 +5,11 @@ import SignUpForm from "./_auth/forms/SignUpForm.tsx";
 
 import RequireAuth from "./components/RequireAuth.tsx";
 import PersistLogin from "./components/PersistLogin.tsx";
-import { Chats, Games, Home, Profile, UpdateProfile } from "./_root/pages";
+import { Chats, Games, Home, ManagePlayers, ManageUsers, Profile, UpdateProfile } from "./_root/pages";
 import RootLayout from "./_root/RootLayout.tsx";
 import Missing from "./components/Missing.tsx";
 import AdminSignInForm from "./_auth/forms/AdminSignInForm.tsx";
+
 
 function App() {
   return (
@@ -40,6 +41,13 @@ function App() {
               />
             </Route>
 
+            <Route element={<RequireAuth roles={['admin']}/>} >
+              <Route path="/users" element={<ManageUsers/>} />
+            </Route>
+
+            <Route element={<RequireAuth roles={['admin', 'staff']}/>} >
+              <Route path="/players" element={<ManagePlayers/>} />
+            </Route>
           </Route>
             {/* Catch for all */}
             <Route path="*" element={<Missing/>} />
