@@ -1,5 +1,5 @@
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { sidebarLinks } from "../constants";
+import { adminSidebarLinks, sidebarLinks } from "../constants";
 import { CountryMap, INavLink } from "../types";
 import { useState } from "react";
 import ConformModal from "../_root/pages/ConformModal";
@@ -22,6 +22,10 @@ const LeftSideBar = () => {
   // console.log( playerDetails);
 
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+
+  
+
+  if(role === 'player'){
   return (
     <nav className="leftsidebar max-h-full">
       <div className=" flex flex-col gap-11">
@@ -29,16 +33,7 @@ const LeftSideBar = () => {
           <div className=" h-14">
             <Loader />
           </div>
-        ): role === 'admin' ? (
-          <div className="flex gap-3 items-center">
-             <div className="bg-gray-500 w-12 h-12 rounded-full" />
-            <div className="flex flex-col">
-                  <p className="body-bold first-letter:capitalize">
-                Admin
-              </p>
-            </div>
-          </div>
-        ) : role === 'player' ? (
+        ): (
           <Link to={`/profile/${user.id}`} className="flex gap-3 items-center">
               {
                 !playerDetails ? (<Loader/>) : (
@@ -56,15 +51,6 @@ const LeftSideBar = () => {
                 )
               }
           </Link>
-        ) : (
-            <div className="flex gap-3 items-center">
-             <div className="bg-gray-500 w-12 h-12 rounded-full" />
-            <div className="flex flex-col">
-                  <p className="body-bold first-letter:capitalize">
-                Staff
-              </p>
-            </div>
-          </div>
         )}
 
         <ul>
@@ -114,6 +100,76 @@ const LeftSideBar = () => {
       />
     </nav>
   );
+}
+
+if(role === 'admin' || role === 'staff'){
+  return (
+     <nav className="leftsidebar max-h-full">
+  <div className=" flex flex-col gap-11">
+    {!user.id ? (
+      <div className=" h-14">
+        <Loader />
+      </div>
+    ): (
+      <div className="flex gap-3 items-center">
+         <div className="bg-gray-500 w-12 h-12 rounded-full" />
+        <div className="flex flex-col">
+              <p className="body-bold first-letter:capitalize">
+           {role}
+          </p>
+        </div>
+      </div>
+    ) 
+    }
+
+    <ul>
+      {adminSidebarLinks.map((link: INavLink, index) => {
+        const isActive = pathname === link.route;
+        return (
+          <li
+            className={`leftsidebar-link group ${
+              isActive && "bg-primary-500"
+            }`}
+            key={index}
+          >
+            <NavLink
+              className={"flex gap-4 items-center p-4"}
+              to={link.route}
+            >
+              {/* <img src={link.imageUrl} alt={link.label} className={` group-hover:invert-white ${isActive && 'invert-white'}`} /> */}
+              {link.label}
+            </NavLink>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+  <button
+    className="shad-button_ghost"
+    onClick={() => {
+      setIsLogoutModalOpen(true);
+    }}
+  >
+    <img src="/assets/icons/logout.svg" alt="logout" />
+    <p className=" small-medium lg:base-medium">Logout</p>
+  </button>
+
+  <ConformModal
+    className="top-[45vh] left-[50rem]"
+    isOpened={isLogoutModalOpen}
+    message="Are you sure you want to logout?"
+    onConfirm={() => {
+      setIsLogoutModalOpen(false);
+      logout();
+      navigate("/sign-in");
+    }}
+    onReject={() => {
+      setIsLogoutModalOpen(false);
+    }}
+  />
+</nav>
+);
+}
 };
 
 export default LeftSideBar;
