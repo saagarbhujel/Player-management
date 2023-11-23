@@ -17,4 +17,19 @@ export const sidebarLinks = [
    
   ];
   
-  
+  export const adminSidebarLinks = [
+    {
+    //   imageUrl: "/assets/icons/home.svg",
+      route: "/",
+      label: "Home",
+    },
+    {
+      route: '/users',
+      label: 'Users',
+    },
+    {
+      route: '/players',
+      label: 'Players',
+    }
+   
+  ];
