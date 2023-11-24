@@ -1,3 +1,4 @@
+import DashBoard from "../../components/DashBoard";
 import LeaderBoard from "../../components/LeaderBoard";
 import useAuth from "../../hooks/useAuth";
 
@@ -6,17 +7,12 @@ const Home = () => {
   const role = user.role;
   document.title = "Player Management-Home";
 
-  return (
-    <div>
-      {role === "admin" ? (
-        <div>Admin</div>
-      ) : role === "staff" ? (
-        <div>Staff</div>
-      ) : (
-        <LeaderBoard />
-      )}
-    </div>
-  );
+
+  if(role === 'admin' || role === 'staff') {
+    return <div><DashBoard/></div>
+  } else {
+    return <LeaderBoard/>
+  }
 };
 
 export default Home;
