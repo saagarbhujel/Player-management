@@ -33,19 +33,17 @@ const DashBoard = () => {
   const fetchPlayers = async () => {
     setIsLoadingUserCount(true);
     try {
-      const res = await axiosPrivate.get('/user/players/all?pageSize=1&page=1')
+      const res = await axiosPrivate.get("/user/players/all?pageSize=1&page=1");
       // console.log(res);
-      if(res.statusText === 'OK') {
-        setPlayerCount(res.data.meta.totalItems)
+      if (res.statusText === "OK") {
+        setPlayerCount(res.data.meta.totalItems);
       }
-      
     } catch (error) {
       setToast("Something went wrong. Please try again later.", "error");
-      
-    }finally {
+    } finally {
       setIsLoadingUserCount(false);
     }
-  }
+  };
 
   useEffect(() => {
     fetchUsers();
@@ -58,11 +56,10 @@ const DashBoard = () => {
       ) : (
         <>
           <div>
-              <h2 className=" uppercase p-8 font-bold text-[28px]">DashBoard</h2>
+            <h2 className=" uppercase p-8 font-bold text-[28px]">DashBoard</h2>
             <div className="flex gap-6 flex-col lg:flex-row  justify-center items-center h-[82vh] w-full drop-shadow-md ">
               <div className=" flex gap-8  bg-gradient-to-r from-blue-300 to-orange-200 place-items-center p-6 rounded-md  w-[80vw] md:w-[50vw] lg:w-[26vw] xl:w-[24vw] 2xl:w-[21vw]">
-              
-                   {/* lg:w-[21vw] w-[80vw] */}
+                {/* lg:w-[21vw] w-[80vw] */}
                 <img
                   src="/assets/icons/people.svg"
                   alt="people"
@@ -71,8 +68,8 @@ const DashBoard = () => {
                   className=" place-items-center p-2 rounded-full border border-gray-200  shadow-md"
                 />
                 <div className="flex flex-col gap-3 items-center">
-                    <h2 className=" text-[26px] font-bold">Total Users</h2>
-                    <p className="text-[24px] font-semibold">{userCount}</p>
+                  <h2 className=" text-[26px] font-bold">Total Users</h2>
+                  <p className="text-[24px] font-semibold">{userCount}</p>
                 </div>
               </div>
 
@@ -85,8 +82,8 @@ const DashBoard = () => {
                   className=" place-items-center  p-2 rounded-full border border-gray-400 shadow-md"
                 />
                 <div className="flex flex-col gap-3 items-center">
-                    <h2 className="text-[26px] font-bold">Total Players</h2>
-                    <p className="text-[24px] font-semibold">{playerCount}</p>
+                  <h2 className="text-[26px] font-bold">Total Players</h2>
+                  <p className="text-[24px] font-semibold">{playerCount}</p>
                 </div>
               </div>
             </div>
