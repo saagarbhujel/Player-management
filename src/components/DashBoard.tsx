@@ -10,6 +10,7 @@ const DashBoard = () => {
   const { setToast } = useToast();
 
   const [userCount, setUserCount] = useState(0);
+  const [playerCount, setPlayerCount] = useState(0);
   const [isLoadingUserCount, setIsLoadingUserCount] = useState(false);
 
   const fetchUsers = async () => {
@@ -29,8 +30,26 @@ const DashBoard = () => {
     }
   };
 
+  const fetchPlayers = async () => {
+    setIsLoadingUserCount(true);
+    try {
+      const res = await axiosPrivate.get('/user/players/all?pageSize=1&page=1')
+      // console.log(res);
+      if(res.statusText === 'OK') {
+        setPlayerCount(res.data.meta.totalItems)
+      }
+      
+    } catch (error) {
+      setToast("Something went wrong. Please try again later.", "error");
+      
+    }finally {
+      setIsLoadingUserCount(false);
+    }
+  }
+
   useEffect(() => {
     fetchUsers();
+    fetchPlayers();
   }, [user.role]);
   return (
     <div>
@@ -67,7 +86,7 @@ const DashBoard = () => {
                 />
                 <div className="flex flex-col gap-3 items-center">
                     <h2 className="text-[26px] font-bold">Total Players</h2>
-                    <p className="text-[24px] font-semibold">{userCount}</p>
+                    <p className="text-[24px] font-semibold">{playerCount}</p>
                 </div>
               </div>
             </div>
