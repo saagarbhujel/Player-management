@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import AllUsers from '../../components/AllUsers';
+import CreateUsers from '../../components/CreateUsers';
 
 const ManageUsers = () => {
 
@@ -33,11 +35,11 @@ const ManageUsers = () => {
         {
           active === 'users' ? (
             <div>
-              <h2>All Users</h2>
+              <AllUsers />
             </div>
           ): (
             <div>
-              <h2>Create User</h2>
+             <CreateUsers />
             </div>
           )
         }
