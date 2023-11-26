@@ -31,7 +31,7 @@ const ManageUsers = () => {
           </button>
         </ul>
       </div>
-      <div>
+      {/* <div>
         {
           active === 'users' ? (
             <div>
@@ -43,6 +43,15 @@ const ManageUsers = () => {
             </div>
           )
         }
+      </div> */}
+      <div>
+        <div className={`${active === 'users' ? '' : 'hidden'}`}>
+          <AllUsers />
+        </div>
+        
+        <div className={`${active === 'createUser' ? '' : 'hidden'}`}>
+          <CreateUsers />
+        </div>
       </div>
     </div>
   )
