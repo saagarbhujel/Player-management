@@ -58,3 +58,13 @@ export const CountryMap = new Map()
 .set(Country['United States'], 'United States')
 .set(Country.Australia, 'Australia')
 .set(Country.Afghanistan, 'Afghanistan');
+
+
+export type PageMeta = {
+    totalItems: number
+  itemsPerPage: number
+  currentPage: number
+  totalPages: number
+  hasNextPage: boolean
+  hasPreviousPage: boolean
+}
