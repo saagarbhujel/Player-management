@@ -55,7 +55,7 @@ const AllUsers = () => {
   return (
     <div className="flex flex-1 flex-col mt-16 items-center">
       <h2 className="font-bold text-[28px]">All Users</h2>
-      <div className=" w-[90vw] md:w-full overflow-auto mt-6">
+      <div className="  md:w-full overflow-auto mt-6">
         <table className="table-auto w-full text-left ">
           <colgroup className="rounded-lg">
             <col span={1} className="w-[35%]" />
@@ -75,8 +75,11 @@ const AllUsers = () => {
           </thead>
 
           <tbody>
-            {users.map((user) => (
-              <tr className="bg-green-300/20 hover:bg-green-400/40 ">
+            {users.map((user, index) => (
+              <tr
+                key={index}
+                className="bg-green-300/20 hover:bg-green-400/40 "
+              >
                 <td className="p-4 first-letter:capitalize">{user.name}</td>
                 <td className="p-4">{user.email}</td>
                 <td className="p-4 first-letter:capitalize">{user.role}</td>
