@@ -21,7 +21,7 @@ const ManagePlayers = () => {
   const fetchPlayer = async () => {
     setLoading(true)
     try {
-      const res = await axiosPrivate.get(`/user/players/all?pageSize=10&page=${!page?.match(/^\d+$/) ? 1 : page}`)
+      const res = await axiosPrivate.get(`/user/players/all?pageSize=6&page=${!page?.match(/^\d+$/) ? 1 : page}`)
     console.log(res);
 
     if(res.status === 200) {
