@@ -70,7 +70,7 @@ const PlayerCard = ({ player, setPlayers, players }: PlayerCardProps) => {
               <div className="relative">
                 <div
                   className={`${
-                    player.active ? "bg-emerald-200" : "bg-rose-200"
+                    player.active ? "bg-emerald-400" : "bg-rose-400"
                   } w-8 h-4 rounded-full shadow-inner`}
                 />
                 <div
