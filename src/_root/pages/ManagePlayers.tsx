@@ -64,7 +64,7 @@ const ManagePlayers = () => {
                   // console.log(player,"tala");
                   
                   return (
-                    <PlayerCard key={index} player={player} />
+                    <PlayerCard key={index} player={player} setPlayers={setPlayers} players={players} />
                     )
                   })
                 }
