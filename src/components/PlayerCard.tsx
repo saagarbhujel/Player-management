@@ -3,6 +3,7 @@ import { CountryMap, Player } from "../types";
 import Loader from "./Loader";
 import useAuth from "../hooks/useAuth";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import EditPlayerModal from "./EditPlayerModal";
 
 type PlayerCardProps = {
   player: Player;
@@ -15,8 +16,10 @@ const PlayerCard = ({ player, setPlayers, players }: PlayerCardProps) => {
   const axiosPrivate = useAxiosPrivate();
 
   const [loading, setLoading] = useState(false);
+  const [isEditPlayerOpen, setIsEditPlayerOpen] = useState(false);
+  const [editPlayer, setEditPlayer] = useState<Player>({} as Player);
 
-  console.log(player.active);
+  // console.log(player.active);
 
   const toogleActive = async (player: Player) => {
     setLoading(true);
@@ -24,7 +27,7 @@ const PlayerCard = ({ player, setPlayers, players }: PlayerCardProps) => {
       const res = await axiosPrivate.patch(
         `/user/player/setInactive/${player.id}`
       );
-      console.log(res);
+      // console.log(res);
       if (res.status === 200) {
         const playersClone = players?.map((p) =>
           p.id === player.id ? { ...p, active: !p.active } : p
@@ -36,6 +39,10 @@ const PlayerCard = ({ player, setPlayers, players }: PlayerCardProps) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleUpdate = async () => {
+    console.log("update");
   };
 
   return (
@@ -59,6 +66,30 @@ const PlayerCard = ({ player, setPlayers, players }: PlayerCardProps) => {
               {CountryMap.get(player.country)}
             </p>
           </div>
+
+          <div>
+            <button
+              onClick={() => {
+                setEditPlayer(player);
+                setIsEditPlayerOpen(true);
+              }}
+            >
+              <img src="/assets/icons/edit.svg" alt="editPlayer" />
+            </button>
+          </div>
+
+          <EditPlayerModal
+            className="top-[30vh] left-[50rem] w-[25vw] h-[35vh]"
+            isOpened={isEditPlayerOpen}
+            message="Edit Player"
+            onConfirm={() => {
+              handleUpdate();
+            }}
+            onReject={() => setIsEditPlayerOpen(false)}
+            setEditPlayer={setEditPlayer}
+            editPlayer={editPlayer}
+          />
+
           <div className="p-4">
             <h2 className={"hidden md:block mb-2"}>Status</h2>
             <button
