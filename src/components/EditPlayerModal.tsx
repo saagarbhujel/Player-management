@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { Country, CountryMap, Player } from "../types";
 import Modal from "./Modal";
+import Loader from "./Loader";
 
 type EditPlayerProps = {
   isOpened: boolean;
@@ -10,6 +11,7 @@ type EditPlayerProps = {
   className?: string;
   setEditPlayer: Dispatch<SetStateAction<Player>>;
   editPlayer: Player;
+  loading: boolean;
 };
 
 const EditPlayerModal = ({
@@ -20,6 +22,7 @@ const EditPlayerModal = ({
   className,
   setEditPlayer,
   editPlayer,
+  loading
 }: EditPlayerProps) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditPlayer({ ...editPlayer, [e.target.name]: e.target.value });
@@ -81,7 +84,10 @@ const EditPlayerModal = ({
               className="py-2 px-4 rounded-md text-white  bg-blue-500"
               onClick={onConfirm}
             >
-              Update
+              {
+                loading ? <Loader/> : "Update"
+              }
+             
             </button>
             <button
               type="button"
