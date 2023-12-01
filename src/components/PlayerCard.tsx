@@ -4,6 +4,7 @@ import Loader from "./Loader";
 import useAuth from "../hooks/useAuth";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import EditPlayerModal from "./EditPlayerModal";
+import { useToast } from "../hooks/useToast";
 
 type PlayerCardProps = {
   player: Player;
@@ -14,6 +15,7 @@ type PlayerCardProps = {
 const PlayerCard = ({ player, setPlayers, players }: PlayerCardProps) => {
   const { user } = useAuth();
   const axiosPrivate = useAxiosPrivate();
+  const {setToast} = useToast();
 
   const [loading, setLoading] = useState(false);
   const [isEditPlayerOpen, setIsEditPlayerOpen] = useState(false);
@@ -42,7 +44,30 @@ const PlayerCard = ({ player, setPlayers, players }: PlayerCardProps) => {
   };
 
   const handleUpdate = async () => {
-    console.log("update");
+    // console.log("update");
+    setLoading(true);
+    try {
+      
+      const res = await axiosPrivate.put(`/user/player/update/${editPlayer.id}`,{
+        name: editPlayer.name,
+        country: editPlayer.country,
+      });
+  
+      if(res.status === 200){
+      setToast(res.data.message, 'success')
+      setIsEditPlayerOpen(false);
+      // console.log(res);
+      const playerClone = players.map((p)=> 
+        p.id === editPlayer.id ? editPlayer : p
+      )
+      setPlayers(playerClone)
+      setEditPlayer({} as Player)
+      }
+    } catch (error) {
+      setToast("Something went wrong", 'error')
+    }finally{
+      setLoading(false);
+    }
   };
 
   return (
@@ -88,6 +113,7 @@ const PlayerCard = ({ player, setPlayers, players }: PlayerCardProps) => {
             onReject={() => setIsEditPlayerOpen(false)}
             setEditPlayer={setEditPlayer}
             editPlayer={editPlayer}
+            loading={loading}
           />
 
           <div className="p-4">
