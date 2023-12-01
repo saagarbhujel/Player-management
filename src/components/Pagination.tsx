@@ -28,7 +28,7 @@ const Pagination = ({
         {onFirstPage ? (
           <button
             className={cn(
-              " bg-blue-500 px-3 py-1 md:px-6 md:py-2 rounded-md text-white hover:bg-blue-600 disabled:bg-slate-500/50 cursor-pointer disabled:cursor-not-allowed",
+              " bg-blue-500 px-3 py-1 md:px-6 md:py-2 rounded-md text-white hover:bg-blue-600 disabled:bg-slate-500/50 cursor-pointer disabled:cursor-not-allowed ",
               meta.hasPreviousPage ? activeClass : inactiveClass
             )}
             onClick={onFirstPage}
@@ -40,7 +40,7 @@ const Pagination = ({
 
         <button
           className={cn(
-            "bg-blue-500 px-3 py-1 md:px-6 md:py-2 rounded-md text-white disabled:bg-slate-500/50 disabled:cursor-not-allowed",
+            "bg-blue-500 px-3 py-1 md:px-6 md:py-2 rounded-md text-white disabled:bg-slate-500/50 disabled:cursor-not-allowed hover:bg-blue-600",
             meta.hasPreviousPage ? activeClass : inactiveClass
           )}
           onClick={onPrev}
@@ -53,7 +53,7 @@ const Pagination = ({
         </div>
         <button
           className={cn(
-            "bg-blue-500 px-3 py-1 md:px-6 md:py-2 rounded-md text-white disabled:bg-slate-500/50 disabled:cursor-not-allowed",
+            "bg-blue-500 px-3 py-1 md:px-6 md:py-2 rounded-md text-white disabled:bg-slate-500/50 disabled:cursor-not-allowed hover:bg-blue-600",
             meta.hasNextPage ? activeClass : inactiveClass
           )}
           onClick={onNext}
@@ -65,7 +65,7 @@ const Pagination = ({
         {onLastPage ? (
           <button
             className={cn(
-              "bg-blue-500 px-3 py-1 md:px-6 md:py-2 rounded-md text-white disabled:bg-slate-500/50 disabled:cursor-not-allowed",
+              "bg-blue-500 px-3 py-1 md:px-6 md:py-2 rounded-md text-white disabled:bg-slate-500/50 disabled:cursor-not-allowed hover:bg-blue-600",
               meta.hasNextPage ? activeClass : inactiveClass
             )}
             onClick={onLastPage}
