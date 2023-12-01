@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import AllUsers from "../../components/AllUsers";
 import CreateUsers from "../../components/CreateUsers";
 
