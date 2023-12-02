@@ -11,12 +11,16 @@ const useSearch = () => {
   const [meta, setMeta] = useState({} as PageMeta);
   const [searchResult, setSearchResult] = useState([] as Player[]);
   const debouncedSearch = useDebounce(search, 500);
+  const [page, setPage] = useState(1);
+  const [isListVisible, setIsListVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const searchReasult = async () => {
+      setLoading(true);
       try {
         const res = await axiosPrivate.get(
-          `/user/players/all?country=${country}&pageSize=10&page=1&searchKey=${debouncedSearch}`
+          `/user/players/all?country=${country}&pageSize=10&page=${page}&searchKey=${debouncedSearch}`
         );
         const players: Player[] = res.data.data;
         // console.log(players);
@@ -24,14 +28,19 @@ const useSearch = () => {
         // console.log(res);
         const meta: PageMeta = res.data.meta;
         setMeta(meta);
+        setIsListVisible(true);
       } catch (error) {
         console.log(error);
+      } finally{
+        setLoading(false);
       }
     };
-    if (debouncedSearch) {
+    
       searchReasult();
-    }
-  }, [debouncedSearch]);
+  
+  }, [debouncedSearch , page, country]);
+
+ 
 
   return {
     setSearch,
@@ -40,6 +49,11 @@ const useSearch = () => {
     country,
     searchResult,
     meta,
+    setPage,
+    isListVisible, 
+    setIsListVisible,
+    loading,
+    
   };
 };
 
