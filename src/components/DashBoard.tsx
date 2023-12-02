@@ -55,7 +55,7 @@ const DashBoard = () => {
         <Loader />
       ) : (
         <>
-          <div>
+          <div className=" z-0">
             <h2 className=" uppercase p-8 font-bold text-[28px]">DashBoard</h2>
             <div className="flex gap-6 flex-col lg:flex-row  justify-center items-center h-[82vh] w-full drop-shadow-md ">
               <div className=" flex gap-8  bg-gradient-to-r from-blue-300 to-orange-200 place-items-center p-6 rounded-md  w-[80vw] md:w-[50vw] lg:w-[26vw] xl:w-[24vw] 2xl:w-[21vw]">
