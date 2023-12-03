@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { CountryMap, Player } from "../../types";
@@ -9,6 +9,7 @@ const Profile = () => {
   const { userId } = useParams();
   const { user } = useAuth();
   const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
 
   const [playerData, setPlayerData] = useState<Player | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -57,6 +58,15 @@ const Profile = () => {
   }
 
   return (
+    <>
+       <div className="hidden md:flex max-w-5xl w-full mt-6 mx-3">
+        <button onClick={()=>(navigate(-1))}>
+          <img src="/assets/icons/back.svg"  width={28}
+            height={24} alt="back" />
+          <p className="small-medium lg:base-medium">Back</p>
+        </button>
+      </div>
+   
     <div className="profile-container">
       <div className="profile-inner_container">
         <div className="flex xl:flex-row flex-col max-xl:items-center flex-1 gap-7">
@@ -107,6 +117,7 @@ const Profile = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
