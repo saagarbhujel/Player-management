@@ -15,14 +15,24 @@ const Profile = () => {
 
   // console.log(user.id, userId);
 
+  
   // Inside your component
   const handleFetchUser = useCallback(async () => {
     setIsLoading(true);
     try {
+      if(user.role == 'player'){
       const res = await axiosPrivate.get(`/player/${userId}`);
-      console.log(res);
+      // console.log(res);
       const data: Player = res.data;
       setPlayerData(data);
+    }
+      if(user.role == ('admin' || "staff")){
+        const res = await axiosPrivate.get(`/user/player/${userId}`);
+        // console.log(res);
+        const data: Player = res.data;
+        setPlayerData(data);
+      }
+
     } catch (error) {
       console.error("Failed to fetch user:", error);
     } finally {
@@ -30,9 +40,13 @@ const Profile = () => {
     }
   }, [axiosPrivate, userId]);
 
+
+
   useEffect(() => {
     handleFetchUser();
   }, [handleFetchUser]);
+
+
 
   if (isLoading && !playerData) {
     return (
