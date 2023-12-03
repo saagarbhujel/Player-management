@@ -12,8 +12,8 @@ const useSearch = () => {
   const [searchResult, setSearchResult] = useState([] as Player[]);
   const debouncedSearch = useDebounce(search, 500);
   const [page, setPage] = useState(1);
-  const [isListVisible, setIsListVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isListVisible, setIsListVisible] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const searchReasult = async () => {
@@ -28,7 +28,13 @@ const useSearch = () => {
         // console.log(res);
         const meta: PageMeta = res.data.meta;
         setMeta(meta);
-        setIsListVisible(true);
+
+        if(debouncedSearch.length === 0) {
+        setIsListVisible(false);
+        }
+        else{
+          setIsListVisible(true);
+        }
       } catch (error) {
         console.log(error);
       } finally{
