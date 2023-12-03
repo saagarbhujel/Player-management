@@ -19,8 +19,17 @@ const SearchBar = () => {
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+
+    // Event handler for focusing on the input field
+    const handleInputFocus = () => {
+      if (searchResult.length > 0 && search.trim() !== "") {
+        setIsListVisible(true);
+      }
+    };
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
+    
       if (
         !listRef.current?.contains(e.target as Node) &&
         !inputRef.current?.contains(e.target as Node)
@@ -37,12 +46,7 @@ const SearchBar = () => {
     };
   }, []);
 
-  // Event handler for focusing on the input field
-  const handleInputFocus = () => {
-    if (searchResult.length > 0) {
-      setIsListVisible(true);
-    }
-  };
+
 
   return (
     <div className=" relative ">
@@ -53,7 +57,7 @@ const SearchBar = () => {
           required
           value={country}
           onChange={(e) => setCountry(e.target.value)}
-          className="block outline-none rounded-l-md border w-16 bg-blue-200 px-2 py-1.5 text-gray-900 shadow-sm border-gray-400 border-r-0   sm:text-sm sm:leading-6"
+          className="block outline-none rounded-l-md border w-18 bg-blue-200 px-2 py-1.5 text-gray-900 shadow-sm border-gray-400 border-r-0   sm:text-sm sm:leading-6"
         >
           <option value={""} disabled>
             Select Country
