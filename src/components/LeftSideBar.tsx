@@ -112,7 +112,9 @@ if(role === 'admin' || role === 'staff'){
       </div>
     ): (
       <div className="flex gap-3 items-center">
-         <div className="bg-gray-500 w-12 h-12 rounded-full" />
+         <div className=" w-12 h-12 rounded-full" >
+          <img src="/assets/icons/profile-placeholder.svg" alt="profile" />
+         </div>
         <div className="flex flex-col">
               <p className="body-bold first-letter:capitalize">
            {role}
