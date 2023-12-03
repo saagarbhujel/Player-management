@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import useSearch from "../hooks/useSearch";
 import Pagination from "./Pagination";
+import { Link } from "react-router-dom";
 
 const SearchBar = () => {
   const {
@@ -46,7 +47,10 @@ const SearchBar = () => {
     };
   }, []);
 
-
+const handleLinkClick = () => {
+  setIsListVisible(false);
+  setSearch("");
+}
 
   return (
     <div className=" relative ">
@@ -86,16 +90,18 @@ const SearchBar = () => {
         {searchResult.length > 0 && isListVisible ? (
           <>
             <ul className=" max-h-56 min-h-min overflow-y-auto ">
-              {searchResult.map((player, index) => (
+              {searchResult.map((player) => (
+                <Link to={`/profile/${player.id}`} onClick={handleLinkClick}>
                 <li
-                  key={index}
+                  key={player.id}
                   className="flex  hover:bg-green-400 py-3 justify-between pr-2 group pl-2"
-                >
+                  >
                   <span>{player.name}</span>
                   <span className="group-hover:text-gray-100">
                     {player.statistics.experience_point}
                   </span>
                 </li>
+                  </Link>
               ))}
             </ul>
             {meta ? (
