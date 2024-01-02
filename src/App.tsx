@@ -34,6 +34,8 @@ function App() {
 
             <Route element={<RequireAuth roles={["player"]} />}>
               <Route path="/chats" element={<Chats />} />
+              <Route path="chats/room/:roomName" element={<Chats />} />
+            <Route path="chats/user/:userId" element={<Chats />} />
               <Route path="/games" element={<Games />} />
               <Route
                 path="/update-profile/:userId"
