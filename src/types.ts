@@ -68,3 +68,11 @@ export type PageMeta = {
   hasNextPage: boolean
   hasPreviousPage: boolean
 }
+
+export type Room = {
+    name: string;
+    players: {
+        id: string;
+        name: string;
+    }[];
+}
