@@ -31,6 +31,19 @@ export default function useChat() {
     }
   };
 
+  const leaveRoom = (roomName: string) => {
+    if(roomName !== ""){
+      socket?.emit("leave_room", {roomName}, ()=>{
+        socket.emit("message_all", {
+          message: JSON.stringify({
+            event: "leave_room",
+            roomName,
+          })
+        })
+      })
+    }
+  };
+
   const getRooms = async () => {
     setIsLoadingRooms(true);
     try {
@@ -50,6 +63,7 @@ export default function useChat() {
   return {
     joinRoom,
     getRooms,
+    leaveRoom,
 
     rooms,
 

@@ -4,14 +4,17 @@ import AddRoom from "../../components/Chats/AddRoom";
 import { useParams } from "react-router-dom";
 import useChat from "../../hooks/useChat";
 import RoomChat from "../../components/Chats/RoomChat";
+import { IoIosLogOut } from "react-icons/io";
+import ConformModal from "./ConformModal";
 
 const Chats = () => {
   // const {getRooms, rooms, socket} = useSocket();
   const { roomName, userId } = useParams();
-  const { getRooms, rooms, socket } = useChat();
+  const { getRooms, rooms, socket, leaveRoom } = useChat();
 
   const [showRightNav, setShowRightNav] = useState(false);
   const [isLoadingRooms, setIsLoadingRooms] = useState(false);
+  const [isLeaveRoomModalOpened, setIsLeaveRoomModalOpened] = useState(false);
 
   const loadRooms = async () => {
     setIsLoadingRooms(true);
@@ -30,7 +33,14 @@ const Chats = () => {
       if (jsonMessage.event === "create_room") {
         getRooms();
       }
+
+      if(jsonMessage.event === 'leave_room'){
+        if(jsonMessage.roomName){
+          getRooms()
+        }
+      }
     });
+
 
     return () => {
       socket?.off("message");
@@ -41,16 +51,31 @@ const Chats = () => {
   return (
     <div className="w-full  min-h-full  h-[calc(100vh-5rem)] relative z-20  ">
       <nav className="flex justify-between items-center  w-full h-16  bg-primary-500 px-5  ">
-        <h1 className="text-2xl font-semibold">Chats</h1>
+        <h1 className="text-2xl font-semibold">
+          {roomName ? roomName : "Chats"}
+        </h1>
 
-        <button
-          className="text-[26px] text-white"
-          onClick={() => {
-            setShowRightNav(!showRightNav);
-          }}
-        >
-          <IoInformationCircleOutline />
-        </button>
+        <div className=" flex  gap-4">
+          <button
+            className={`${
+              !roomName ? "hidden" : "block"
+            } text-[26px] text-white`}
+            onClick={() => {
+              setIsLeaveRoomModalOpened(true);
+            }}
+          >
+            <IoIosLogOut />
+          </button>
+
+          <button
+            className="text-[26px] text-white"
+            onClick={() => {
+              setShowRightNav(!showRightNav);
+            }}
+          >
+            <IoInformationCircleOutline />
+          </button>
+        </div>
       </nav>
 
       {/* right Side nav */}
@@ -99,6 +124,21 @@ const Chats = () => {
           </div>
         </div>
       )}
+
+      {
+        <ConformModal
+        className="top-[45vh] left-[50rem]"
+          isOpened={isLeaveRoomModalOpened}
+          message={`This action will delete the room`}
+          onConfirm={() => {
+            setIsLeaveRoomModalOpened(false);
+            leaveRoom(roomName || "default");
+          }}
+          onReject={() => {
+            setIsLeaveRoomModalOpened(false);
+          }}
+        />
+      }
     </div>
   );
 };
