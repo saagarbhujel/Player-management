@@ -28,12 +28,12 @@ const Chats = () => {
   useEffect(() => {
     socket?.on("message", ({ message }: { message: string }) => {
       const jsonMessage = JSON.parse(message);
-
       //when new room is created refresh list
       if (jsonMessage.event === "create_room") {
         getRooms();
       }
 
+      //when room is leave refresh list
       if(jsonMessage.event === 'leave_room'){
         if(jsonMessage.roomName){
           getRooms()
@@ -82,7 +82,7 @@ const Chats = () => {
       <div
         className={`${
           showRightNav ? "translate-x-0" : "translate-x-full "
-        } top-16 right-0  md:w-[18vw] bg-gray-200 h-full rounded-br-lg  fixed ease-in-out duration-300`}
+        } top-16 right-0  md:w-[18vw] bg-gray-200 h-full rounded-br-lg  fixed ease-in-out duration-300 z-30`}
       >
         <div className=" flex pl-2 pr-2 my-4">
           <AddRoom
