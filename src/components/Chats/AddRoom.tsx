@@ -25,16 +25,18 @@ const AddRoom: FC<AddRoomProps> = ({
   isLoadingRooms,
   hideRoomsList
 }: AddRoomProps) => {
+  
+  const [roomName, setRoomName] = useState("");
   const navigate = useNavigate();
 
-  const [roomName, setRoomName] = useState("");
-
+  
   return (
     <div className="flex flex-col">
       <form
         className={cn(className)}
         onSubmit={(e) => {
           e.preventDefault();
+          hideRoomsList()
           setRoomName((_) => "");
           navigate(`/chats/room/${roomName}`);
         }}
@@ -46,7 +48,7 @@ const AddRoom: FC<AddRoomProps> = ({
           placeholder={inputPlaceholder}
           value={roomName}
           name="roomName"
-          onChange={(e) => setRoomName(e.target.value)}
+          onChange={({target}) => setRoomName(target.value)}
           required
         />
         <button type="submit" className={buttonStyles}>
@@ -63,9 +65,9 @@ const AddRoom: FC<AddRoomProps> = ({
           {isLoadingRooms ? (
             <Loader />
           ) : rooms.length ? (
-            rooms.map((room) => (
+            rooms.map((room, index) => (
               <button
-                key={room.name}
+                key={index}
                 type="button"
                 className="bg-green-500 hover:bg-green-600 w-full  h-12 rounded-md text-white mt-2  "
                 onClick={()=>{

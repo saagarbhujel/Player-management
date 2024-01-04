@@ -1,11 +1,14 @@
-import { useState } from "react";
-import { Room } from "../types";
+import { useEffect, useState } from "react";
+import { Message, Room } from "../types";
 import useAxiosPrivate from "./useAxiosPrivate";
 import useSocket from "./useSocket";
 
 export default function useChat() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [isLoadingRooms, setIsLoadingRooms] = useState(false);
+  const [receiver, setReceiver] = useState("");
+  const [messages, setMessages] = useState<Message[]>([])
+  const [activePlayers, setActivePlayers] = useState<Map<string, string>>(new Map());
 
   const axios = useAxiosPrivate();
   const socket = useSocket();
@@ -48,10 +51,13 @@ export default function useChat() {
     setIsLoadingRooms(true);
     try {
       const res = await axios.get("/chats/allRoom");
-
+      // console.log("res", res);
+      
       if (res.status === 200) {
         const rooms: Room[] = await res.data;
         setRooms(rooms);
+        // console.log("rooms", rooms);
+        
       }
     } catch (error) {
       console.error("Error fetching rooms:", error);
@@ -60,10 +66,72 @@ export default function useChat() {
     }
   };
 
+  const getRoomMessages = async (roomName:string) =>{
+    setIsLoadingRooms(true);
+
+    if(roomName !== receiver){
+      setMessages([]);
+      setReceiver(roomName);
+    }
+
+    try {
+      const res = await axios.get(`/chats/room?roomName=${roomName}`)
+
+      if ( res.headers &&  res.status === 200 && res.headers["content-type"]?.includes("application/json")) {
+        const json = await res.data;
+        const messages: Message[] = json.chats;
+        messages.sort((a,b)=> new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+       
+        const active = new Map();
+
+         // collect players who are joined in the room
+         for(const player of json.players){
+          active.set(player.id, player.name);
+         }
+         setActivePlayers(active);
+
+         // collect players who have sent messages in the room at least once
+        //  const players = new Set(messages.map(message => message.senderId));
+
+        //  const kv = await getPlayers(Array.from(players).join(","));
+        
+
+
+        setMessages(messages);
+      }
+      
+      
+      
+    } catch (error) {
+      console.log("Error fetching messages:", error);      
+    }finally{
+      setIsLoadingRooms(false);
+    }
+  }
+
+  const sendRoomMessage = (roomName: string,message: string) => {
+    if(message.trim() === '') return;
+
+    socket?.emit("message_room", {
+      roomName,
+      message: message.trim(),
+    })
+  }
+
+
+
   return {
     joinRoom,
     getRooms,
     leaveRoom,
+
+    receiver,
+
+    messages,
+    setMessages,
+
+    getRoomMessages,
+    sendRoomMessage,
 
     rooms,
 
