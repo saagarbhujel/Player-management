@@ -76,3 +76,10 @@ export type Room = {
         name: string;
     }[];
 }
+
+export type Message = {
+    id: string,
+  senderId: string,
+  created_at: string,
+  message: string,
+}
