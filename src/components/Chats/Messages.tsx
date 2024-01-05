@@ -58,7 +58,7 @@ const Messages = ({ messages, players, userId }: MessagesProps) => {
                       className={`${
                         message.sender_id !== userId
                           ? "text-gray-500 mx-5 py-1 text-sm "
-                          : "text-gray-500 mx-5 py-1 text-sm text-end ml-[15rem]  "
+                          : "text-gray-500 mx-5 py-1 text-sm text-end ml-[13rem]  "
                       }`}
                     >
                       {getDate(new Date(message.created_at))}
