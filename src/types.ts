@@ -79,7 +79,7 @@ export type Room = {
 
 export type Message = {
     id: string,
-  senderId: string,
+    sender_id: string,
   created_at: string,
   message: string,
 }
