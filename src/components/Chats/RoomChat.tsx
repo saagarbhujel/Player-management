@@ -6,7 +6,7 @@ import Messages from "./Messages";
 import ChatInput from "./ChatInput";
 
 const RoomChat = ({ roomName }: { roomName: string }) => {
-  const { joinRoom, socket, getRoomMessages, messages, setMessages, sendRoomMessage, receiver } = useChat();
+  const { joinRoom, socket, getRoomMessages, messages, setMessages, sendRoomMessage, receiver, players } = useChat();
   const navigate = useNavigate();
   const {user} = useAuth();
 
@@ -25,12 +25,12 @@ const RoomChat = ({ roomName }: { roomName: string }) => {
       const newMessage = {
         id, 
         message,
-        senderId,
+        sender_id:senderId,
         created_at: new Date().toUTCString(),
       }
       const cloneMessages = messages ? [...messages, newMessage] : [newMessage]
       setMessages(cloneMessages)
-      console.log(messages);
+      // console.log(messages);
       
     })
 
@@ -78,10 +78,10 @@ const RoomChat = ({ roomName }: { roomName: string }) => {
     {/* messages */}
     <div className="flex flex-1 w-full min-h-[calc(100vh-14rem)] relative">
               <div className="flex flex-col px-2 w-full flex-1 h-full justify-end">
-    <Messages messages={messages} />
+    <Messages messages={messages} players={players} userId={user.id} />
 
     {/* input */}
-    <ChatInput receiver={receiver} onSubmit={sendRoomMessage} />
+    <ChatInput receiver={roomName} onSubmit={sendRoomMessage} />
     </div>
     </div>
 
