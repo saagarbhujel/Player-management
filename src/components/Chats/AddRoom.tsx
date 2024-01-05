@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { cn } from "../../utils";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Room } from "../../types";
 import Loader from "../Loader";
 
@@ -28,6 +28,7 @@ const AddRoom: FC<AddRoomProps> = ({
   
   const [roomName, setRoomName] = useState("");
   const navigate = useNavigate();
+  const {pathname} = useLocation();
 
   
   return (
@@ -65,19 +66,24 @@ const AddRoom: FC<AddRoomProps> = ({
           {isLoadingRooms ? (
             <Loader />
           ) : rooms.length ? (
-            rooms.map((room, index) => (
+            rooms.map((room, index) => {
+              const isActive = pathname === `/chats/room/${room.name}`;
+              return(
               <button
                 key={index}
                 type="button"
-                className="bg-green-500 hover:bg-green-600 w-full  h-12 rounded-md text-white mt-2  "
+                className={`bg-green-500 hover:bg-green-600 w-full  h-12 rounded-md text-white mt-2 ${isActive && 'bg-green-800 hover:bg-green-800 hover:text-purple-200'}`}
                 onClick={()=>{
                   hideRoomsList()
                   navigate(`/chats/room/${room.name}`)
                 }}
               >
+         
+
                 {room.name}
+            
               </button>
-            ))
+            )})
           ) : (
             <div>No room found.</div>
           )}
