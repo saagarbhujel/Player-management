@@ -1,15 +1,17 @@
 import { useEffect, useRef } from "react";
 import { Message } from "../../types";
 import { getDate } from "../../utils";
+import Loader from "../Loader";
 // import { useNavigate } from "react-router-dom";
 
 type MessagesProps = {
   messages: Message[];
   players: Map<string, string>;
   userId: string;
+  isLoadingRooms: boolean;
 };
 
-const Messages = ({ messages, players, userId }: MessagesProps) => {
+const Messages = ({ messages, players, userId, isLoadingRooms }: MessagesProps) => {
   const chatRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -17,6 +19,16 @@ const Messages = ({ messages, players, userId }: MessagesProps) => {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
   }, [messages]);
+
+
+  
+if(isLoadingRooms){
+  return(
+    <div className="flex justify-center items-center h-[85vh]">
+      <Loader />
+    </div>
+  )
+}
 
   return (
     <div ref={chatRef} className="max-h-[85vh] overflow-y-auto">
