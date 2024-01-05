@@ -12,7 +12,7 @@ type AddRoomProps = {
   buttonStyles?: string;
   rooms: Room[];
   isLoadingRooms: boolean;
-  hideRoomsList: () => void
+  hideRoomsList: () => void;
 };
 
 const AddRoom: FC<AddRoomProps> = ({
@@ -23,33 +23,31 @@ const AddRoom: FC<AddRoomProps> = ({
   buttonStyles,
   rooms,
   isLoadingRooms,
-  hideRoomsList
+  hideRoomsList,
 }: AddRoomProps) => {
-  
   const [roomName, setRoomName] = useState("");
   const navigate = useNavigate();
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
 
-  
   return (
     <div className="flex flex-col">
       <form
         className={cn(className)}
         onSubmit={(e) => {
           e.preventDefault();
-          hideRoomsList()
+          hideRoomsList();
           setRoomName((_) => "");
           navigate(`/chats/room/${roomName}`);
         }}
       >
         <input
           type="text"
-          id='roomName'
+          id="roomName"
           className={inputStyles}
           placeholder={inputPlaceholder}
           value={roomName}
           name="roomName"
-          onChange={({target}) => setRoomName(target.value)}
+          onChange={({ target }) => setRoomName(target.value)}
           required
         />
         <button type="submit" className={buttonStyles}>
@@ -68,22 +66,23 @@ const AddRoom: FC<AddRoomProps> = ({
           ) : rooms.length ? (
             rooms.map((room, index) => {
               const isActive = pathname === `/chats/room/${room.name}`;
-              return(
-              <button
-                key={index}
-                type="button"
-                className={`bg-green-500 hover:bg-green-600 w-full  h-12 rounded-md text-white mt-2 ${isActive && 'bg-green-800 hover:bg-green-800 hover:text-purple-200'}`}
-                onClick={()=>{
-                  hideRoomsList()
-                  navigate(`/chats/room/${room.name}`)
-                }}
-              >
-         
-
-                {room.name}
-            
-              </button>
-            )})
+              return (
+                <button
+                  key={index}
+                  type="button"
+                  className={`bg-green-500 hover:bg-green-600 w-full  h-12 rounded-md text-white mt-2 ${
+                    isActive &&
+                    "bg-green-800 hover:bg-green-800 hover:text-purple-200"
+                  }`}
+                  onClick={() => {
+                    hideRoomsList();
+                    navigate(`/chats/room/${room.name}`);
+                  }}
+                >
+                  {room.name}
+                </button>
+              );
+            })
           ) : (
             <div>No room found.</div>
           )}
