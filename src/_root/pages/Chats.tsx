@@ -51,7 +51,7 @@ const Chats = () => {
   return (
     <div className="w-full  min-h-full  h-[calc(100vh-5rem)] relative z-20  ">
       <nav className="flex justify-between items-center  w-full h-16  bg-primary-500 px-5  ">
-        <h1 className="text-2xl font-semibold">
+        <h1 className="text-2xl font-semibold text-white">
           {roomName ? roomName : "Chats"}
         </h1>
 
