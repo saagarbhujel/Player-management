@@ -41,6 +41,31 @@ export const getDate=(date: Date) =>{
     const hourMinute = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
 
     if(currentDate.toDateString() === date.toDateString()){
+        return `${hourMinute} `;
+    } 
+
+    const yesterday = new Date(currentDate.setDate(currentDate.getDate() - 1)).toDateString();
+
+    if (yesterday === date.toDateString()) {
+        return `Yesterday`;
+      }
+    
+      return `${yearMonth} `;
+}
+
+export const getFullDate=(date: Date) =>{
+    const currentDate = new Date();
+
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    // const hour = date.getHours();
+    // const minute = date.getMinutes().toString().padStart(2, '0');
+
+    const yearMonth = `${day}/${month}/${year}`;
+    const hourMinute = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+
+    if(currentDate.toDateString() === date.toDateString()){
         return `Today ${hourMinute}`;
     } 
 
