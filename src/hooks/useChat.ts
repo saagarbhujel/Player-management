@@ -7,6 +7,7 @@ export default function useChat() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [isLoadingRooms, setIsLoadingRooms] = useState(false);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
+  const [loadingPlayers, setLoadingPlayers] = useState(false);
   const [receiver, setReceiver] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [activePlayers, setActivePlayers] = useState<Map<string, string>>(
@@ -73,7 +74,7 @@ export default function useChat() {
 
 
   const getPlayers = async (players: string) => {
-    setIsLoadingRooms(true);
+    setLoadingPlayers(true);
     try {
       const res = await axios.get(`/player/${players}`);
       // console.log("res", res);
@@ -94,7 +95,7 @@ export default function useChat() {
       console.log("Error fetching players:", error);
       
     }finally {
-      setIsLoadingRooms(false);
+      setLoadingPlayers(false);
     }
   };
 
@@ -206,6 +207,44 @@ export default function useChat() {
 
   }
 
+
+  const getPrivateMessages = async(senderId: string, recipientId: string)=>{
+
+    setIsLoadingMessages(true)
+    if(recipientId !== receiver){
+      setMessages([]);
+      setReceiver(recipientId);
+    }
+
+    try {
+      const res = await axios.get(`/chats/personal?senderId=${senderId}&receiverId=${recipientId}`)
+      if(res.status === 200){
+        const message:Message[] = await res.data;
+
+        message.sort((a,b)=> new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+        setMessages(message);
+      }
+      
+    } catch (error) {
+      console.log("Error fetching private messages:", error);
+      
+    }finally{
+      setIsLoadingMessages(false)
+    }
+  }
+
+  const sendPrivateMessage = (recipientId: string, message: string) =>{
+
+    if(message.trim() === "") return;
+
+    socket?.emit("privateMessage",({
+      message: message.trim(),
+      recipientId,
+    }))
+
+
+  }
+
   return {
     joinRoom,
     getRooms,
@@ -222,13 +261,18 @@ export default function useChat() {
     deleteMessage,
     updatedMessage,
 
+    getPrivateMessages,
+    sendPrivateMessage,
+
     rooms,
 
     players,
+    setPlayers,
     activePlayers,
     socket,
 
     isLoadingRooms,
     isLoadingMessages,
+    loadingPlayers,
   };
 }
