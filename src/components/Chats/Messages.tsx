@@ -3,6 +3,7 @@ import { Message } from "../../types";
 import { getDate, getFullDate } from "../../utils";
 import Loader from "../Loader";
 import ConformModal from "../../_root/pages/ConformModal";
+import { useNavigate } from "react-router-dom";
 
 // import { useNavigate } from "react-router-dom";
 
@@ -12,8 +13,12 @@ type MessagesProps = {
   userId: string;
   isLoadingMessages: boolean;
   deleteMessage: (id: string) => void;
-  updatedMessage: (id: string, message: string, roomName: string) => void;
-  roomName: string;
+  editedMessage: string;
+  setEditedMessage: React.Dispatch<React.SetStateAction<string>>;
+  editMessage: string;
+  setEditMessage: React.Dispatch<React.SetStateAction<string>>;
+  handleUpdateMessage: (id: string) => void;
+  isPrivate?: boolean;
 };
 
 const Messages = ({
@@ -22,11 +27,16 @@ const Messages = ({
   userId,
   isLoadingMessages,
   deleteMessage,
-  updatedMessage,
-  roomName,
+  editedMessage,
+  setEditedMessage,
+  editMessage,
+  handleUpdateMessage,
+  setEditMessage,
+  isPrivate,
 }: MessagesProps) => {
   const chatRef = useRef<HTMLDivElement>(null);
   const editRef = useRef<HTMLTextAreaElement>(null);
+  const navigate = useNavigate();
 
   const [isDropDownOpen, setIsDropDownOpen] = useState<string | null>(null);
   const [isEditModelOpen, setIsEditModelOpen] = useState(false);
@@ -34,8 +44,6 @@ const Messages = ({
   const [isDeleteMessageModalOpen, setIsDeleteMessageModalOpen] =
     useState(false);
   const [deleteMessageId, setDeleteMessageId] = useState("");
-  const [editMessage, setEditMessage] = useState("");
-  const [editedMessage, setEditedMessage] = useState("");
 
   useEffect(() => {
     if (chatRef.current) {
@@ -53,11 +61,6 @@ const Messages = ({
     setIsDropDownOpen((prev) => (prev === id ? null : id));
   };
 
-  const handleUpdateMessage = (messageId: string) => {
-    updatedMessage(messageId, editedMessage, roomName);
-    setEditMessage("");
-  };
-
   if (isLoadingMessages) {
     return (
       <div className="flex justify-center items-center h-[85vh]">
@@ -65,7 +68,6 @@ const Messages = ({
       </div>
     );
   }
-
 
   return (
     <div ref={chatRef} className="max-h-[85vh] overflow-y-auto ">
@@ -117,7 +119,6 @@ const Messages = ({
                   </div>
 
                   <div className="flex items-center relative ">
-                 
                     <div
                       className={`  py-2 rounded-lg mx-4  px-4 group relative max-w-xs md:w-[18vw] md:max-w-md text-lg font-inter  ${
                         message.sender_id === userId
@@ -129,7 +130,7 @@ const Messages = ({
                         <p key={index}>{msg || "\u00A0"}</p>
                       ))}
                     </div>
-                    
+
                     {/* edit model */}
                     {isEditModelOpen && editMessage === message.id && (
                       <div className=" group-hover:none absolute top-[4vh] right-[35rem] h-[15rem]  rounded-md flex items-center justify-center bg-gray-300 z-10 ">
@@ -241,9 +242,16 @@ const Messages = ({
                                     </button>
                                   </li>
                                 </>
-                              ) : (
+                              ) : isPrivate ? null : (
                                 <li>
-                                  <button className="block w-full text-start px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">
+                                  <button
+                                    onClick={() => {
+                                      navigate(
+                                        `/chats/user/${message.sender_id}`
+                                      );
+                                    }}
+                                    className="block w-full text-start px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+                                  >
                                     Private Chat
                                   </button>
                                 </li>
