@@ -6,6 +6,7 @@ import useSocket from "./useSocket";
 export default function useChat() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [isLoadingRooms, setIsLoadingRooms] = useState(false);
+  const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const [receiver, setReceiver] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [activePlayers, setActivePlayers] = useState<Map<string, string>>(
@@ -98,7 +99,7 @@ export default function useChat() {
   };
 
   const getRoomMessages = async (roomName: string) => {
-    setIsLoadingRooms(true);
+    setIsLoadingMessages(true)
 
     if (roomName !== receiver) {
       setMessages([]);
@@ -141,7 +142,7 @@ export default function useChat() {
     } catch (error) {
       console.log("Error fetching messages:", error);
     } finally {
-      setIsLoadingRooms(false);
+      setIsLoadingMessages(false);
     }
   };
 
@@ -153,6 +154,57 @@ export default function useChat() {
       message: message.trim(),
     });
   };
+
+  const deleteMessage = async (messageId: string) => {
+    try {
+      await axios.delete(`/chats/${messageId}`);
+      // console.log("res", res);
+
+      socket?.emit("message_all",{
+        message: JSON.stringify({
+          event: "delete_message",
+          id: messageId,
+        }),
+      })
+      
+    } catch (error) {
+      console.log("Error deleting message:", error);
+    
+    }
+  }
+
+  const updatedMessage = async (messageId: string, newMessage:string, roomName?:string) => {
+    if(newMessage.trim() === "") return;
+     await axios.put(`/chats/${messageId}`,{
+      message: newMessage.trim(),
+    }, {
+      headers: {
+      "Content-Type": "application/json",
+    },}
+    )
+    // console.log("res", res);
+    
+    const newUpdatedMessage = messages.map((message) => {
+      if(message.id === messageId){
+        return{
+          ...message,
+          messages: newMessage.trim(),
+        }
+      }
+      return message;
+    });
+    setMessages(newUpdatedMessage);
+
+
+
+    socket?.emit("message_all", {
+      message: JSON.stringify({
+        event: "update_message",
+        roomName,
+      })
+    })
+
+  }
 
   return {
     joinRoom,
@@ -167,6 +219,8 @@ export default function useChat() {
     getPlayers,
     getRoomMessages,
     sendRoomMessage,
+    deleteMessage,
+    updatedMessage,
 
     rooms,
 
@@ -175,5 +229,6 @@ export default function useChat() {
     socket,
 
     isLoadingRooms,
+    isLoadingMessages,
   };
 }

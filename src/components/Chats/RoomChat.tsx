@@ -6,7 +6,7 @@ import Messages from "./Messages";
 import ChatInput from "./ChatInput";
 
 const RoomChat = ({ roomName }: { roomName: string }) => {
-  const { joinRoom, socket, getRoomMessages, messages, setMessages, sendRoomMessage, receiver, players, isLoadingRooms } = useChat();
+  const { joinRoom, socket, getRoomMessages, messages, setMessages, sendRoomMessage, players, isLoadingMessages, deleteMessage, updatedMessage } = useChat();
   const navigate = useNavigate();
   const {user} = useAuth();
 
@@ -78,7 +78,7 @@ const RoomChat = ({ roomName }: { roomName: string }) => {
     {/* messages */}
     <div className="flex flex-1 w-full min-h-[calc(100vh-14rem)] relative">
               <div className="flex flex-col px-2 w-full flex-1 h-full justify-end">
-    <Messages messages={messages} players={players} userId={user.id} isLoadingRooms={isLoadingRooms} />
+    <Messages messages={messages} players={players} userId={user.id} isLoadingMessages={isLoadingMessages} deleteMessage={deleteMessage} updatedMessage={updatedMessage} roomName={roomName} />
 
     {/* input */}
     <ChatInput receiver={roomName} onSubmit={sendRoomMessage} />
