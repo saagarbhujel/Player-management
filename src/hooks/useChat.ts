@@ -7,15 +7,13 @@ export default function useChat() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [isLoadingRooms, setIsLoadingRooms] = useState(false);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
-  const [loadingPlayers, setLoadingPlayers] = useState(false);
+  const [isLoadingPlayers, setIsLoadingPlayers] = useState(false);
   const [receiver, setReceiver] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [activePlayers, setActivePlayers] = useState<Map<string, string>>(
     new Map()
   );
-  const [players, setPlayers] = useState<Map<string, string>>(
-    new Map()
-  );
+  const [players, setPlayers] = useState<Map<string, string>>(new Map());
 
   const axios = useAxiosPrivate();
   const socket = useSocket();
@@ -58,7 +56,7 @@ export default function useChat() {
     setIsLoadingRooms(true);
     try {
       const res = await axios.get("/chats/allRoom");
-      // console.log("res", res);
+      // console.log("res", res.data);
 
       if (res.status === 200) {
         const rooms: Room[] = await res.data;
@@ -72,35 +70,33 @@ export default function useChat() {
     }
   };
 
-
   const getPlayers = async (players: string) => {
-    setLoadingPlayers(true);
+    setIsLoadingPlayers(true);
     try {
       const res = await axios.get(`/player/${players}`);
-      // console.log("res", res);
       const kv = new Map();
 
-      if(res.status === 200){
+      if (res.statusText === "OK") {
         const data = await res.data;
 
-        if( Array.isArray(data)){
-          for(const player of data){
-            kv.set(player.id, player.name)
-          } } else{
-            kv.set(data.id, data.name)
+        if (Array.isArray(data)) {
+          for (const player of data) {
+            kv.set(player.id, player.name);
           }
+        } else {
+          kv.set(data.id, data.name);
         }
-        return kv;
+      }
+      return kv;
     } catch (error) {
       console.log("Error fetching players:", error);
-      
-    }finally {
-      setLoadingPlayers(false);
+    } finally {
+      setIsLoadingPlayers(false);
     }
   };
 
   const getRoomMessages = async (roomName: string) => {
-    setIsLoadingMessages(true)
+    setIsLoadingMessages(true);
 
     if (roomName !== receiver) {
       setMessages([]);
@@ -131,12 +127,12 @@ export default function useChat() {
         setActivePlayers(active);
 
         // collect players who have sent messages in the room at least once
-         const players = new Set(messages.map((message) => message.sender_id));
+        const players = new Set(messages.map((message) => message.sender_id));
 
-         const kv = await getPlayers(Array.from(players).join(","));
-         if(kv){
-          setPlayers((prev)=> new Map([...prev, ...kv, ...active]))
-         }
+        const kv = await getPlayers(Array.from(players).join(","));
+        if (kv) {
+          setPlayers((prev) => new Map([...prev, ...kv, ...active]));
+        }
 
         setMessages(messages);
       }
@@ -161,89 +157,90 @@ export default function useChat() {
       await axios.delete(`/chats/${messageId}`);
       // console.log("res", res);
 
-      socket?.emit("message_all",{
+      socket?.emit("message_all", {
         message: JSON.stringify({
           event: "delete_message",
           id: messageId,
         }),
-      })
-      
+      });
     } catch (error) {
       console.log("Error deleting message:", error);
-    
     }
-  }
+  };
 
-  const updatedMessage = async (messageId: string, newMessage:string, roomName?:string) => {
-    if(newMessage.trim() === "") return;
-     await axios.put(`/chats/${messageId}`,{
-      message: newMessage.trim(),
-    }, {
-      headers: {
-      "Content-Type": "application/json",
-    },}
-    )
+  const updatedMessage = async (
+    messageId: string,
+    newMessage: string,
+    roomName?: string
+  ) => {
+    if (newMessage.trim() === "") return;
+    await axios.put(
+      `/chats/${messageId}`,
+      {
+        message: newMessage.trim(),
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     // console.log("res", res);
-    
+
     const newUpdatedMessage = messages.map((message) => {
-      if(message.id === messageId){
-        return{
+      if (message.id === messageId) {
+        return {
           ...message,
           messages: newMessage.trim(),
-        }
+        };
       }
       return message;
     });
     setMessages(newUpdatedMessage);
 
-
-
     socket?.emit("message_all", {
       message: JSON.stringify({
         event: "update_message",
         roomName,
-      })
-    })
+      }),
+    });
+  };
 
-  }
-
-
-  const getPrivateMessages = async(senderId: string, recipientId: string)=>{
-
-    setIsLoadingMessages(true)
-    if(recipientId !== receiver){
+  const getPrivateMessages = async (senderId: string, recipientId: string) => {
+    setIsLoadingMessages(true);
+    if (recipientId !== receiver) {
       setMessages([]);
       setReceiver(recipientId);
     }
 
     try {
-      const res = await axios.get(`/chats/personal?senderId=${senderId}&receiverId=${recipientId}`)
-      if(res.status === 200){
-        const message:Message[] = await res.data;
+      const res = await axios.get(
+        `/chats/personal?senderId=${senderId}&receiverId=${recipientId}`
+      );
+      if (res.status === 200) {
+        const message: Message[] = await res.data;
 
-        message.sort((a,b)=> new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+        message.sort(
+          (a, b) =>
+            new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+        );
         setMessages(message);
       }
-      
     } catch (error) {
       console.log("Error fetching private messages:", error);
-      
-    }finally{
-      setIsLoadingMessages(false)
+    } finally {
+      setIsLoadingMessages(false);
     }
-  }
+  };
 
-  const sendPrivateMessage = (recipientId: string, message: string) =>{
+  const sendPrivateMessage = (recipientId: string, message: string) => {
+    if (message.trim() === "") return;
 
-    if(message.trim() === "") return;
-
-    socket?.emit("privateMessage",({
+    socket?.emit("privateMessage", {
       message: message.trim(),
       recipientId,
-    }))
-
-
-  }
+    });
+  };
 
   return {
     joinRoom,
@@ -273,6 +270,6 @@ export default function useChat() {
 
     isLoadingRooms,
     isLoadingMessages,
-    loadingPlayers,
+    isLoadingPlayers,
   };
 }

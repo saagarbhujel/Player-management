@@ -6,6 +6,8 @@ import useChat from "../../hooks/useChat";
 import RoomChat from "../../components/Chats/RoomChat";
 import { IoIosLogOut } from "react-icons/io";
 import ConformModal from "./ConformModal";
+import PlayersInRoom from "../../components/Chats/PlayersInRoom";
+import PrivateChat from "../../components/Chats/PrivateChat";
 
 const Chats = () => {
   // const {getRooms, rooms, socket} = useSocket();
@@ -15,6 +17,9 @@ const Chats = () => {
   const [showRightNav, setShowRightNav] = useState(false);
   const [isLoadingRooms, setIsLoadingRooms] = useState(false);
   const [isLeaveRoomModalOpened, setIsLeaveRoomModalOpened] = useState(false);
+  const [playerInRoom, setPlayerInRoom] = useState<
+    { id: string; player: string }[]
+  >([]);
 
   const loadRooms = async () => {
     setIsLoadingRooms(true);
@@ -34,13 +39,12 @@ const Chats = () => {
       }
 
       //when room is leave refresh list
-      if(jsonMessage.event === 'leave_room'){
-        if(jsonMessage.roomName){
-          getRooms()
+      if (jsonMessage.event === "leave_room") {
+        if (jsonMessage.roomName) {
+          getRooms();
         }
       }
     });
-
 
     return () => {
       socket?.off("message");
@@ -52,7 +56,7 @@ const Chats = () => {
     <div className="w-full  min-h-full  h-[calc(100vh-5rem)] relative z-20  ">
       <nav className="flex justify-between items-center  w-full h-16  bg-primary-500 px-5  ">
         <h1 className="text-2xl font-semibold text-white">
-          {roomName ? roomName : "Chats"}
+          {roomName ? roomName : "Private Chat"}
         </h1>
 
         <div className=" flex  gap-4">
@@ -96,13 +100,14 @@ const Chats = () => {
             hideRoomsList={() => setShowRightNav(false)}
           />
         </div>
+        {roomName ? <PlayersInRoom playerInRoom={playerInRoom} /> : null}
       </div>
 
       {/* message section */}
       {roomName ? (
-        <RoomChat roomName={roomName} />
+        <RoomChat roomName={roomName} setPlayerInRoom={setPlayerInRoom} />
       ) : userId ? (
-        "hello"
+        <PrivateChat userId={userId} />
       ) : (
         <div className=" h-[calc(100vh-5rem)] sm:flex  w-full rounded-e-lg">
           <div className="flex flex-col justify-center items-center h-full w-full">
@@ -127,7 +132,7 @@ const Chats = () => {
 
       {
         <ConformModal
-        className="top-[45vh] left-[50rem]"
+          className="top-[45vh] left-[50rem]"
           isOpened={isLeaveRoomModalOpened}
           message={`This action will delete the room`}
           onConfirm={() => {

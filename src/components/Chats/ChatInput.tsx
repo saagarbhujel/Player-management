@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 
 type ChatInputProps = {
-    receiver: string;
-    onSubmit: ( roomName: string,message: string) => void;
+  onSubmit: ( receiver: string,message: string) => void;
+  receiver: string;
 };
 
-const ChatInput = ({ receiver, onSubmit }: ChatInputProps) => {
+const ChatInput = ({ onSubmit, receiver }: ChatInputProps) => {
   const [message, setMessage] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
