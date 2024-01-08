@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import useChat from "../../hooks/useChat";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import Messages from "./Messages";
 import ChatInput from "./ChatInput";
@@ -42,6 +42,10 @@ const RoomChat = ({ roomName }: { roomName: string }) => {
         if(jsonMessage.roomName){
           getRoomMessages(roomName)
         }
+      }
+
+      if(jsonMessage.event === 'delete_message'){
+        setMessages(messages?.filter((message) => message.id !== jsonMessage.id ))
       }
      
       if(jsonMessage.event === 'leave_room'){
