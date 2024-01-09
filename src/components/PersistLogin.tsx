@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import useAuth from "../hooks/useAuth"
 import useRefrehToken from "../hooks/useRefrehToken";
 import { Outlet, useNavigate } from "react-router-dom";
+import Loader from "./Loader";
 
 
 const PersistLogin = () => {
@@ -34,8 +35,8 @@ const PersistLogin = () => {
     <>
     {
         isLoading ? (
-            <div>
-                Loading...
+            <div className="flex flex-col justify-center items-center min-h-[calc(100vh-8rem)]">
+                <Loader/>
             </div>
         ): (
             <Outlet />
