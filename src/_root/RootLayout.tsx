@@ -3,9 +3,17 @@ import { Outlet } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import useAuth from "../hooks/useAuth";
 import SSENotification from "../components/SSENotification";
+import { useRef } from "react";
+import Loader from "../components/Loader";
 
 const RootLayout = () => {
-  const {user} = useAuth()
+  const {isLoading,user} = useAuth()
+  const isLayoutReady = useRef(false)
+  if (!isLoading) isLayoutReady.current = true
+
+  if (isLoading && !isLayoutReady.current) {
+    return <Loader />;
+  }
   return (
     <div className="w-full md:flex">
       <LeftSideBar />
