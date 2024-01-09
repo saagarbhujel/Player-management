@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { Country, CountryMap } from "../types";
@@ -50,11 +51,12 @@ const CreateUsers = () => {
         data = userData;
       }
 
-      const res = await axiosPrivate.post(endPoint, data);
-      console.log(res);
+       await axiosPrivate.post(endPoint, data);
+      // console.log(res);
 
       setToast("User created successfully.", "success");
       setFormFields(initialFormFields);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response.status !== 201) {
         const data: { message: string | string[] } = error.response.data;
