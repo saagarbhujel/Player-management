@@ -58,7 +58,7 @@ const LeaderBoard =  () => {
     }
   return (
     <>
-    <section className="  mr-4  ml-4  ">
+    <section className="  mr-4  ml-4 mt-8 ">
       <h1  className="text-center uppercase mb-8 font-medium text-[24px] md:text-[30px] ">
         Leaderboard - Top 5 Players
       </h1>
