@@ -30,7 +30,7 @@ const PlayersInRoom = ({playerInRoom}: PlayersInRoomProps) => {
               {/*add user lai chat button show garna vayae na */}
               <button 
               onClick={()=>{
-                console.log(player.id);
+                // console.log(player.id);
                 navigate(`/chats/user/${player.id}`)
               
               }}

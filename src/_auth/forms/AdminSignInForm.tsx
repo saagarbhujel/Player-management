@@ -26,7 +26,7 @@ const AdminSignInForm = () => {
     e.preventDefault();
     try {
       const res = await axios.post('/user/login', { email, password });
-      console.log(res);
+      // console.log(res);
       const data: LoginResponse = res.data;
 
       if(res.status === 201){
@@ -34,7 +34,7 @@ const AdminSignInForm = () => {
         setAuth(data);
         const token = data.refreshToken;
         const decodedToken = jwtDecode<JwtPayload>(token);
-        console.log(decodedToken);
+        // console.log(decodedToken);
         setUser(decodedToken as AuthUser)
         setToast("Login Successful", "success");
         navigate(from, {replace: true})

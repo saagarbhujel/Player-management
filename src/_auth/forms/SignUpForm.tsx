@@ -39,7 +39,7 @@ const SignUpForm = () => {
         password,
         country,
       });
-      console.log(response.status);
+      // console.log(response.status);
       if (response.status === 201) {
         setToast("Account created successfully", "success");
         navigate(from, { replace: true });
@@ -66,7 +66,7 @@ const SignUpForm = () => {
             // console.log(userNameError);
           } else {
             setErrorMsg("Invalid credentials.");
-            console.log("Invalid credentials.");
+            // console.log("Invalid credentials.");
           }
         });
 

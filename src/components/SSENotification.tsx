@@ -8,14 +8,14 @@ const SSENotification = () => {
 
   const connet = () => {
     const eventSource = new EventSource("http://localhost:8080/sse/event");
-    console.log(eventSource, "eventSource");
+    // console.log(eventSource, "eventSource");
     setEventSource(eventSource);
 
     eventSource.onopen = () => {
       console.log("Connection Opened");
     };
     eventSource.onmessage = (e) => {
-      console.log(e.data);
+      // console.log(e.data);
       const msg = e.data;
       setToast(msg, "success", "score");
     };
