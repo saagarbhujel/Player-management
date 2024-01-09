@@ -115,14 +115,16 @@ const Chats = () => {
             <div className="flex flex-col">
               <ul className="list-disc list-inside md:text-lg text-gray-800">
                 <li>
-                  <span>1.</span> Hover over some else's message to join private
-                  chat.
+                  <span>1.</span> Click on the info button to see the list of rooms available.
                 </li>
                 <li>
                   <span>2.</span> Start Conversation by joining a room.
                 </li>
                 <li>
-                  <span>3.</span> Hover over your message to update it.
+                  <span>3.</span> Hover over message and click on the 3 horizontal dots to delete or update message.
+                </li>
+                <li>
+                  <span>4.</span> Hover over other message and click on the 3 horizontal dots to start private chat.
                 </li>
               </ul>
             </div>
